@@ -62,6 +62,9 @@ cvar_t	*sv_lanForceRate; // dedicated 1 (LAN) server forces local client rates t
 cvar_t	*sv_banFile;
 cvar_t	*sv_clientsPerIp;
 
+cvar_t  *mod_infiniteStamina;
+
+
 serverBan_t serverBans[SERVER_MAXBANS];
 int serverBansCount = 0;
 cvar_t	*sv_demonotice;			// notice to print to a client being recorded server-side

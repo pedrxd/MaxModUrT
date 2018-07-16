@@ -222,4 +222,7 @@ exec server.cfg // Start server with the specified config file
 - [x] Send UrT specific server infostring
 - [x] Partial matching of map and players
 
+### Modification related
+- [x] `mod_infinitestamina` Allways stamina full
+
 This list is likely incomplete. Please let me know if I forgot anything!

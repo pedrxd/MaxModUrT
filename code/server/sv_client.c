@@ -1382,6 +1382,15 @@ void SV_ClientThink (client_t *cl, usercmd_t *cmd) {
 
 	VM_Call( gvm, GAME_CLIENT_THINK, cl - svs.clients );
 
+	playerState_t * ps;
+	ps = SV_GameClientNum(cl - svs.clients);
+	if(ps)
+	{
+		if(mod_infiniteStamina->integer)
+			ps->stats[0] = ps->stats[6] * 300;  //Give infinite stamina to the player
+					
+	}
+
 #ifdef USE_SKEETMOD
 	SV_SkeetClientEvents(cl);
 #endif
