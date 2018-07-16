@@ -64,7 +64,7 @@ cvar_t	*sv_clientsPerIp;
 
 cvar_t  *mod_infiniteStamina;
 cvar_t  *mod_infinitewalljumps;
-
+cvar_t  *mod_nofalldamage;
 
 serverBan_t serverBans[SERVER_MAXBANS];
 int serverBansCount = 0;

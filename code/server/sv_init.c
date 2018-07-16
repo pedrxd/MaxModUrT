@@ -933,6 +933,7 @@ void SV_Init (void)
 
 	mod_infiniteStamina = Cvar_Get("mod_infinitestamina", "1", CVAR_ARCHIVE);
 	mod_infinitewalljumps = Cvar_Get ("mod_infinitewalljumps", "1", CVAR_ARCHIVE);
+	mod_nofalldamage = Cvar_Get ("mod_nofalldamage", "1", CVAR_ARCHIVE);
 
 #ifdef USE_AUTH
 	sv_authServerIP = Cvar_Get("sv_authServerIP", "", CVAR_TEMP | CVAR_ROM);
