@@ -1388,7 +1388,10 @@ void SV_ClientThink (client_t *cl, usercmd_t *cmd) {
 	{
 		if(mod_infiniteStamina->integer)
 			ps->stats[0] = ps->stats[6] * 300;  //Give infinite stamina to the player
-					
+
+		if(mod_infinitewalljumps->integer)
+			ps->generic1 = 0;   //Allow infinite jumps over wall
+
 	}
 
 #ifdef USE_SKEETMOD

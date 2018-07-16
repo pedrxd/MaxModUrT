@@ -224,5 +224,6 @@ exec server.cfg // Start server with the specified config file
 
 ### Modification related
 - [x] `mod_infinitestamina` Allways stamina full
+- [x] `mod_infinitewalljumps` Allow infinite jumps over wall
 
 This list is likely incomplete. Please let me know if I forgot anything!

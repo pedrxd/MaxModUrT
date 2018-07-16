@@ -63,6 +63,7 @@ cvar_t	*sv_banFile;
 cvar_t	*sv_clientsPerIp;
 
 cvar_t  *mod_infiniteStamina;
+cvar_t  *mod_infinitewalljumps;
 
 
 serverBan_t serverBans[SERVER_MAXBANS];

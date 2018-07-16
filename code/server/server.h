@@ -342,6 +342,7 @@ extern	cvar_t	*sv_clientsPerIp;
 extern	cvar_t	*sv_banFile;
 
 extern  cvar_t  *mod_infiniteStamina;
+extern  cvar_t  *mod_infinitewalljumps;
 
 extern	serverBan_t serverBans[SERVER_MAXBANS];
 extern	int serverBansCount;
