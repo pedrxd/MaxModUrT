@@ -361,6 +361,7 @@ extern  cvar_t  *mod_infiniteStamina;
 extern  cvar_t  *mod_infinitewalljumps;
 extern  cvar_t  *mod_nofalldamage;
 extern  cvar_t  *mod_colourNames;
+extern  cvar_t  *mod_hideCmds;
 
 extern	serverBan_t serverBans[SERVER_MAXBANS];
 extern	int serverBansCount;

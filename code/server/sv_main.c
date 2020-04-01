@@ -66,6 +66,7 @@ cvar_t  *mod_infiniteStamina;
 cvar_t  *mod_infinitewalljumps;
 cvar_t  *mod_nofalldamage;
 cvar_t  *mod_colourNames;
+cvar_t  *mod_hideCmds;
 
 
 serverBan_t serverBans[SERVER_MAXBANS];

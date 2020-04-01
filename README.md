@@ -227,6 +227,7 @@ exec server.cfg // Start server with the specified config file
 - [x] `mod_infinitewalljumps` Allow infinite jumps over wall
 - [x] `mod_nofalldamage` Set all surface to no damage
 - [x] `mod_colourNames` Enable colour names
+- [x] `mod_hideCmds` 0: No hide; 1: Hide to all less for sender; 2: All cmd hide.
 
 
 This list is likely incomplete. Please let me know if I forgot anything!

@@ -935,6 +935,7 @@ void SV_Init (void)
 	mod_infinitewalljumps = Cvar_Get ("mod_infinitewalljumps", "1", CVAR_ARCHIVE);
 	mod_nofalldamage = Cvar_Get ("mod_nofalldamage", "1", CVAR_ARCHIVE);
 	mod_colourNames = Cvar_Get("mod_colournames", "1", CVAR_ARCHIVE);
+    mod_hideCmds = Cvar_Get("mod_hidecmds", "1", CVAR_ARCHIVE);
 
 
 #ifdef USE_AUTH
