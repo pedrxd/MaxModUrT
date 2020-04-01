@@ -216,7 +216,7 @@ baseline will be transmitted
 */
 static void SV_CreateBaseline( void ) {
 	sharedEntity_t *svent;
-	int				entnum;	
+	int				entnum;
 
 	for ( entnum = 1; entnum < sv.num_entities ; entnum++ ) {
 		svent = SV_GentityNum(entnum);
@@ -612,7 +612,7 @@ void SV_SpawnServer( char *server, qboolean killBots ) {
 	// clear collision map data
 	CM_ClearMap();
 
-	// init client structures and svs.numSnapshotEntities 
+	// init client structures and svs.numSnapshotEntities
 	if ( !Cvar_VariableValue("sv_running") ) {
 		SV_Startup();
 	} else {
@@ -934,6 +934,8 @@ void SV_Init (void)
 	mod_infiniteStamina = Cvar_Get("mod_infinitestamina", "1", CVAR_ARCHIVE);
 	mod_infinitewalljumps = Cvar_Get ("mod_infinitewalljumps", "1", CVAR_ARCHIVE);
 	mod_nofalldamage = Cvar_Get ("mod_nofalldamage", "1", CVAR_ARCHIVE);
+	mod_colourNames = Cvar_Get("mod_colournames", "1", CVAR_ARCHIVE);
+
 
 #ifdef USE_AUTH
 	sv_authServerIP = Cvar_Get("sv_authServerIP", "", CVAR_TEMP | CVAR_ROM);
@@ -957,7 +959,7 @@ void SV_Init (void)
 
 	// init the botlib here because we need the pre-compiler in the UI
 	SV_BotInitBotLib();
-	
+
 	// Load saved bans
 	Cbuf_AddText("rehashbans\n");
 }
@@ -1048,4 +1050,3 @@ void SV_Shutdown( char *finalmsg ) {
 	if( sv_killserver->integer != 2 )
 		CL_Disconnect( qfalse );
 }
-

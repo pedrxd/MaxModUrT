@@ -88,7 +88,7 @@ typedef struct {
 	int				checksumFeed;		// the feed key that we use to compute the pure checksum strings
 	// https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=475
 	// the serverId associated with the current checksumFeed (always <= serverId)
-	int       checksumFeedServerId;	
+	int       checksumFeedServerId;
 	int				snapshotCounter;	// incremented for each snapshot built
 	int				timeResidual;		// <= 1000 / sv_frame->value
 	int				nextFrameTime;		// when time > nextFrameTime, process world
@@ -147,6 +147,21 @@ typedef struct netchan_buffer_s {
 #endif
 	struct netchan_buffer_s *next;
 } netchan_buffer_t;
+
+#define MAX_NETNAME 36
+typedef struct
+{
+	int	connected;
+	usercmd_t	cmd;
+	qboolean unknow1;
+	qboolean unknow2;
+	char		netname[MAX_NETNAME];
+}clientPersistant_t;
+typedef struct gclient_s
+{
+	playerState_t ps;
+	clientPersistant_t pers;
+}gclient_t;
 
 typedef struct client_s {
 	clientState_t	state;
@@ -224,6 +239,7 @@ typedef struct client_s {
 	int powerups[MAX_POWERUPS];
 #endif
 
+ 	char colourName[MAX_NETNAME];
 } client_t;
 
 //=============================================================================
@@ -344,6 +360,7 @@ extern	cvar_t	*sv_banFile;
 extern  cvar_t  *mod_infiniteStamina;
 extern  cvar_t  *mod_infinitewalljumps;
 extern  cvar_t  *mod_nofalldamage;
+extern  cvar_t  *mod_colourNames;
 
 extern	serverBan_t serverBans[SERVER_MAXBANS];
 extern	int serverBansCount;

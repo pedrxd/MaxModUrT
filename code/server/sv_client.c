@@ -23,6 +23,31 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "server.h"
 
+char *SV_CleanName(char *name) {
+
+	static char cleaned[MAX_NAME_LENGTH];
+	int i, j = 0;
+
+	if ( !Q_stricmp( name, "UnnamedPlayer" ) ) {
+		sprintf(cleaned, "%s^7", "UnnamedPlayer");
+		return cleaned;
+	}
+
+	if ( !Q_stricmp( name, "" ) ) {
+		sprintf(cleaned, "%s^7", "UnnamedPlayer");
+		return cleaned;
+	}
+
+	for (i = 0; i < strlen(name) && j < MAX_NAME_LENGTH-1; i++) {
+		if (name[i] >= 39 && name[i] <= 126)
+			if(name[i] != ' ' || name[i] != '\\')
+				cleaned[j++] = name[i];
+	}
+
+	cleaned[j] = 0;
+	return cleaned;
+}
+
 /*
 =================
 SV_GetChallenge
@@ -244,9 +269,9 @@ void SV_DirectConnect( netadr_t from ) {
 			continue;
 		}
 		if ( NET_CompareBaseAdr( from, cl->netchan.remoteAddress )
-			&& ( cl->netchan.qport == qport 
+			&& ( cl->netchan.qport == qport
 			|| from.port == cl->netchan.remoteAddress.port ) ) {
-			if (( svs.time - cl->lastConnectTime) 
+			if (( svs.time - cl->lastConnectTime)
 				< (sv_reconnectlimit->integer * 1000)) {
 				Com_DPrintf ("%s:reconnect rejected : too soon\n", NET_AdrToStringwPort (from));
 				return;
@@ -345,7 +370,7 @@ void SV_DirectConnect( netadr_t from ) {
 			continue;
 		}
 		if ( NET_CompareBaseAdr( from, cl->netchan.remoteAddress )
-			&& ( cl->netchan.qport == qport 
+			&& ( cl->netchan.qport == qport
 			|| from.port == cl->netchan.remoteAddress.port ) ) {
 			Com_Printf ("%s:reconnect\n", NET_AdrToStringwPort (from));
 			newcl = cl;
@@ -418,7 +443,7 @@ void SV_DirectConnect( netadr_t from ) {
 	cl->reliableAcknowledge = 0;
 	cl->reliableSequence = 0;
 
-gotnewcl:	
+gotnewcl:
 	// build a new connection
 	// accept the new client
 	// this is the only place a client_t is ever initialized
@@ -446,9 +471,10 @@ gotnewcl:
 	newcl->demo_waiting = qfalse;
 	newcl->demo_backoff = 1;
 	newcl->demo_deltas = 0;
-	
+
 	// save the userinfo
 	Q_strncpyz( newcl->userinfo, userinfo, sizeof(newcl->userinfo) );
+	Com_sprintf(cl->colourName, MAX_NAME_LENGTH, "%s^7", SV_CleanName(Info_ValueForKey(newcl->userinfo, "name")));
 
 	// get the game a chance to reject this connection or modify the userinfo
 	denied = VM_Call( gvm, GAME_CLIENT_CONNECT, clientNum, qtrue, qfalse ); // firstTime = qtrue
@@ -879,7 +905,7 @@ static void SV_VerifyPaks_f( client_t *cl ) {
 	const char *pPaks, *pArg;
 	qboolean bGood = qtrue;
 
-	// if we are pure, we "expect" the client to load certain things from 
+	// if we are pure, we "expect" the client to load certain things from
 	// certain pk3 files, namely we want the client to have loaded the
 	// ui and cgame that we think should be loaded based on the pure setting
 	//
@@ -1047,7 +1073,7 @@ void SV_UserinfoChanged( client_t *cl ) {
 
 	// name for C code
 	Q_strncpyz( cl->name, Info_ValueForKey (cl->userinfo, "name"), sizeof(cl->name) );
-
+	sprintf(cl->colourName, "%s^7", SV_CleanName(cl->name));
 	// rate command
 
 	// if the client is on the same subnet as the server and we aren't running an
@@ -1097,9 +1123,9 @@ void SV_UserinfoChanged( client_t *cl ) {
 	{
 		// Reset last sent snapshot so we avoid desync between server frame time and snapshot send time
 		cl->lastSnapshotTime = 0;
-		cl->snapshotMsec = i;		
+		cl->snapshotMsec = i;
 	}
-	
+
 #ifdef USE_VOIP
 #ifdef LEGACY_PROTOCOL
 	if(cl->compat)
@@ -1139,12 +1165,15 @@ SV_UpdateUserinfo_f
 ==================
 */
 void SV_UpdateUserinfo_f( client_t *cl ) {
+	gclient_t *gl;
+
 	if ( (sv_floodProtect->integer) && (cl->state >= CS_ACTIVE) && (svs.time < cl->nextReliableUserTime) ) {
 		Q_strncpyz( cl->userinfobuffer, Cmd_Argv(1), sizeof(cl->userinfobuffer) );
 		SV_SendServerCommand(cl, "print \"^7Command ^1delayed^7 due to sv_floodprotect.\"");
 		return;
 	}
 
+	gl = (gclient_t *)SV_GameClientNum(cl - svs.clients);
 	cl->userinfobuffer[0] = 0;
 	cl->nextReliableUserTime = svs.time + 5000;
 
@@ -1153,6 +1182,8 @@ void SV_UpdateUserinfo_f( client_t *cl ) {
 	SV_UserinfoChanged( cl );
 	// call prog code to allow overrides
 	VM_Call( gvm, GAME_CLIENT_USERINFO_CHANGED, cl - svs.clients );
+	if (mod_colourNames->integer)
+		Q_strncpyz(gl->pers.netname, cl->colourName, MAX_NAME_LENGTH);
 }
 
 
@@ -1323,7 +1354,7 @@ static qboolean SV_ClientCommand( client_t *cl, msg_t *msg ) {
 
 	// drop the connection if we have somehow lost commands
 	if ( seq > cl->lastClientCommand + 1 ) {
-		Com_Printf( "Client %s lost %i clientCommands\n", cl->name, 
+		Com_Printf( "Client %s lost %i clientCommands\n", cl->name,
 			seq - cl->lastClientCommand + 1 );
 		SV_DropClient( cl, "Lost reliable commands" );
 		return qfalse;
