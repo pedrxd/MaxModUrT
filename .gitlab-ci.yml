@@ -1,4 +1,5 @@
 build-64bits:
+  image: debian:buster
   script:
     - apt-get update -qq && apt-get install -y -qq gcc make
     - make
