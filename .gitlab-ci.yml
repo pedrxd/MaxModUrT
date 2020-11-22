@@ -1,6 +1,3 @@
-services:
-  - docker:dind
-
 build-64bits:
   image: debian:buster
   script:
